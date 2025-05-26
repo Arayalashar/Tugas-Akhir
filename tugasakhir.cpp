@@ -8,7 +8,7 @@ int main()
     int menu;
     tampilmenu();
     cin >> menu;
-
+    cout << "hai";
     switch (menu)
     {
     case 1:
