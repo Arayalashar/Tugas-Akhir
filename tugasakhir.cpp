@@ -2,13 +2,23 @@
 #include <iomanip>
 using namespace std;
 
+struct Node {
+    int nomor;
+    string nama;
+    string pesanan;
+    Node* next;
+    Node* prev;
+};
+
+Node* head = nullptr;
+Node* tail = nullptr;
+
 void tampilmenu();
 int main()
 {
     int menu;
     tampilmenu();
     cin >> menu;
-    cout << "hai";
     switch (menu)
     {
     case 1:
