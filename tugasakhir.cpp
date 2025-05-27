@@ -1,5 +1,7 @@
 #include <iostream>
 #include <iomanip>
+#include <cstring>
+#include <string>
 using namespace std;
 
 struct Node {
@@ -18,7 +20,7 @@ bool listkosong(){
     return (awal == nullptr);
 }
 
-void tambahAntrean(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru){
+void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru){
     Node*NB = new Node;
     NB -> nomor = nomorBaru;
     NB -> nomorMeja = nomorMejaBaru;
@@ -52,6 +54,89 @@ void tambahAntrean(int nomorBaru, int nomorMejaBaru, string namaBaru, string pes
 
 }
 
+void simpanFile(Node* node) {
+    FILE* file = fopen("riwayat.txt", "a");
+    if (file == nullptr) {
+        cout << "Gagal membuka file riwayat.\n";
+        return;
+    }
+    fprintf(file, "%d,%s,%d,%s\n", node->nomor, node->nama.c_str(), node->nomorMeja, node->pesanan.c_str());
+    fclose(file);
+}
+
+void layani() {
+    if (listkosong()) {
+        cout << "Tidak ada antrian.\n";
+        return;
+    }
+    Node* temp = awal;
+    cout << "Melayani ID " << temp->nomor << " atas nama " << temp->nama << "\n";
+    simpanFile(temp);
+
+    if (awal == akhir) {
+        awal = akhir = nullptr;
+    } else {
+        awal = awal->next;
+        awal->prev = nullptr;
+    }
+    delete temp;
+}
+
+void edit(int nomor) {
+    Node* bantu = awal;
+    while (bantu != nullptr) {
+        if (bantu->nomor == nomor) {
+            cout << "Edit data untuk ID " << nomor << ":\n";
+            cout << "Nama baru: "; cin.ignore(); getline(cin, bantu->nama);
+            cout << "Nomor kursi baru: "; cin >> bantu->nomorMeja;
+            cin.ignore();
+            cout << "Pesanan baru: "; getline(cin, bantu->pesanan);
+            cout << "Berhasil diubah.\n";
+            return;
+        }
+        bantu = bantu->next;
+    }
+    cout << "ID tidak ditemukan.\n";
+}
+
+
+void hapus(int nomor) {
+    Node* bantu = awal;
+    while (bantu != nullptr && bantu->nomor != nomor) {
+        bantu = bantu->next;
+    }
+    if (bantu == nullptr) {
+        cout << "ID tidak ditemukan.\n";
+        return;
+    }
+
+    if (bantu == awal && bantu == akhir) {
+        awal = akhir = nullptr;
+    } else if (bantu == awal) {
+        awal = awal->next;
+        awal->prev = nullptr;
+    } else if (bantu == akhir) {
+        akhir = akhir->prev;
+        akhir->next = nullptr;
+    } else {
+        bantu->prev->next = bantu->next;
+        bantu->next->prev = bantu->prev;
+    }
+
+    delete bantu;
+    cout << "Data berhasil dihapus.\n";
+}
+
+Node* cari(string nama) {
+    Node* bantu = awal;
+    while (bantu != nullptr) {
+        if (bantu->nama == nama) return bantu;
+        bantu = bantu->next;
+    }
+    return nullptr;
+}
+
+
 void tampilmenu();
 int main()
 {
@@ -68,17 +153,19 @@ int main()
         cout << "Masukkan Nomor Meja: "; cin >> nomorMeja;
         cin.ignore();
         cout << "Masukkan Pesanan: "; getline(cin, pesanan);
-        tambahAntrean(nomor, nomorMeja, nama, pesanan);
+        tambahAntrian(nomor, nomorMeja, nama, pesanan);
         break;
         }
     case 2:
         //tampil();
         break;
     case 3:
-        //hapus();
+        int nomor;
+        cout << "Nomor yang ingin dihapus: "; cin >> nomor;
+        hapus(nomor); break;
         break;
     case 4:
-        //layani();
+        layani();
         break;
     case 5:
         //cari();
@@ -87,9 +174,13 @@ int main()
         //urutkan();
         break;
     case 7:
-        //edit();
+        int nomor;
+        cout << "Nomor yang ingin diedit: "; cin >> nomor;
+        edit(nomor); break;
         break;
     case 8:
+        //riwayat();
+    case 9:
         exit(0);
     default:
         break;
@@ -107,7 +198,8 @@ void tampilmenu()
          << "## 5. Cari Antriam              ##\n"
          << "## 6. Urutkan Data              ##\n"
          << "## 7. Edit Antrian              ##\n"
-         << "## 8. Keluar                    ##\n"
+         << "## 8. Riwayat Pesanan           ##\n"
+         << "## 9. Keluar                    ##\n"
          << "##################################\n"
          << "Pilihan Anda (1-8) : ";
 }
