@@ -22,7 +22,8 @@ bool listkosong()
     return (awal == nullptr);
 }
 
-void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru) {
+void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru)
+{
     Node *NB = new Node;
     NB->nomor = nomorBaru;
     NB->nomorMeja = nomorMejaBaru;
@@ -31,25 +32,33 @@ void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pes
     NB->next = nullptr;
     NB->prev = nullptr;
 
-    if (listkosong()) {
+    if (listkosong())
+    {
         awal = akhir = NB;
-    } else if (NB->nama <= awal->nama) {
+    }
+    else if (NB->nama <= awal->nama)
+    {
         NB->next = awal;
         awal->prev = NB;
         awal = NB;
-    } else {
+    }
+    else
+    {
         Node *bantu = awal;
-        while (bantu->next != nullptr && NB->nama > bantu->next->nama) {
+        while (bantu->next != nullptr && NB->nama > bantu->next->nama)
+        {
             bantu = bantu->next;
         }
         NB->next = bantu->next;
-        if (bantu->next != nullptr) {
+        if (bantu->next != nullptr)
+        {
             bantu->next->prev = NB;
         }
         NB->prev = bantu;
         bantu->next = NB;
 
-        if (NB->next == nullptr) {
+        if (NB->next == nullptr)
+        {
             akhir = NB;
         }
     }
@@ -63,12 +72,14 @@ void simpanFile(Node *node)
         cout << "Gagal membuka file riwayat.\n";
         return;
     }
-    fprintf(file, "%d,%s,%d,%s\n", node->nomor, node->nama.c_str(), node->nomorMeja, node->pesanan.c_str());
+    fprintf(file, "%d,%s,%d,%s\n", node->nomor, nama.c_str(), node->nomorMeja, pesanan.c_str());
     fclose(file);
 }
 
-void layani() {
-    if (listkosong()) {
+void layani()
+{
+    if (listkosong())
+    {
         cout << "Tidak ada antrian.\n";
         return;
     }
@@ -76,9 +87,12 @@ void layani() {
     cout << "Melayani ID " << temp->nomor << " atas nama " << temp->nama << "\n";
     simpanFile(temp);
 
-    if (awal == akhir) {
+    if (awal == akhir)
+    {
         awal = akhir = nullptr;
-    } else {
+    }
+    else
+    {
         awal = awal->next;
         awal->prev = nullptr;
     }
@@ -87,10 +101,13 @@ void layani() {
     cout << "Pelanggan dengan ID " << temp->nomor << " telah dilayani.\n";
 }
 
-void edit(int nomor) {
+void edit(int nomor)
+{
     Node *bantu = awal;
-    while (bantu != nullptr) {
-        if (bantu->nomor == nomor) {
+    while (bantu != nullptr)
+    {
+        if (bantu->nomor == nomor)
+        {
             cout << "Edit data untuk ID " << nomor << ":\n";
             cout << "Nama baru: ";
             cin.ignore();
@@ -108,25 +125,35 @@ void edit(int nomor) {
     cout << "ID tidak ditemukan.\n";
 }
 
-void hapus(int nomor) {
+void hapus(int nomor)
+{
     Node *bantu = awal;
-    while (bantu != nullptr && bantu->nomor != nomor) {
+    while (bantu != nullptr && bantu->nomor != nomor)
+    {
         bantu = bantu->next;
     }
-    if (bantu == nullptr) {
+    if (bantu == nullptr)
+    {
         cout << "ID tidak ditemukan.\n";
         return;
     }
 
-    if (bantu == awal && bantu == akhir) {
+    if (bantu == awal && bantu == akhir)
+    {
         awal = akhir = nullptr;
-    } else if (bantu == awal) {
+    }
+    else if (bantu == awal)
+    {
         awal = awal->next;
         awal->prev = nullptr;
-    } else if (bantu == akhir) {
+    }
+    else if (bantu == akhir)
+    {
         akhir = akhir->prev;
         akhir->next = nullptr;
-    } else {
+    }
+    else
+    {
         bantu->prev->next = bantu->next;
         bantu->next->prev = bantu->prev;
     }
@@ -165,6 +192,58 @@ void tampil()
     cout << "\nTekan Enter untuk kembali ke menu...";
     cin.ignore();
     cin.get();
+}
+
+void menumakanan()
+{
+    cout << "\n";
+    cout << "===============================================\n";
+    cout << "           MENU RESTORAN GACOAN              \n";
+    cout << "===============================================\n";
+    cout << "| No |        Nama Menu        |   Harga    |\n";
+    cout << "===============================================\n";
+
+    // Mie
+    cout << "|    |      ** MIE GACOAN **   |            |\n";
+    cout << "| 1  | Mie Gacoan Level 0      | Rp 15.000  |\n";
+    cout << "| 2  | Mie Gacoan Level 1      | Rp 15.000  |\n";
+    cout << "| 3  | Mie Gacoan Level 2      | Rp 15.000  |\n";
+    cout << "| 4  | Mie Gacoan Level 3      | Rp 15.000  |\n";
+    cout << "| 5  | Mie Gacoan Level 4      | Rp 15.000  |\n";
+    cout << "| 6  | Mie Gacoan Level 5      | Rp 15.000  |\n";
+    cout << "-----------------------------------------------\n";
+
+    // Dimsum
+    cout << "|    |      ** DIMSUM **       |            |\n";
+    cout << "| 7  | Dimsum Ayam (4 pcs)     | Rp 12.000  |\n";
+    cout << "| 8  | Dimsum Udang (4 pcs)    | Rp 15.000  |\n";
+    cout << "| 9  | Dimsum Kulit (4 pcs)    | Rp 10.000  |\n";
+    cout << "-----------------------------------------------\n";
+
+    // Tahu & Tempe
+    cout << "|    |    ** TAHU & TEMPE **   |            |\n";
+    cout << "| 10 | Tahu Gejrot              | Rp 8.000   |\n";
+    cout << "| 11 | Tahu Crispy              | Rp 10.000  |\n";
+    cout << "| 12 | Tempe Mendoan            | Rp 8.000   |\n";
+    cout << "-----------------------------------------------\n";
+
+    // Minuman
+    cout << "|    |      ** MINUMAN **      |            |\n";
+    cout << "| 13 | Es Teh Manis             | Rp 5.000   |\n";
+    cout << "| 14 | Es Jeruk                 | Rp 7.000   |\n";
+    cout << "| 15 | Es Cappuccino            | Rp 12.000  |\n";
+    cout << "| 16 | Air Mineral              | Rp 3.000   |\n";
+    cout << "-----------------------------------------------\n";
+
+    // Snack
+    cout << "|    |      ** SNACK **        |            |\n";
+    cout << "| 17 | Kerupuk                  | Rp 2.000   |\n";
+    cout << "| 18 | Rempeyek                 | Rp 3.000   |\n";
+    cout << "| 19 | Emping                   | Rp 4.000   |\n";
+    cout << "===============================================\n";
+    cout << "         * Level pedas: 0 = Tidak Pedas *    \n";
+    cout << "         * Level pedas: 1-5 = Makin Pedas *  \n";
+    cout << "===============================================\n";
 }
 
 void sorting()
@@ -270,10 +349,11 @@ Node *cari(string nama)
     return nullptr;
 }
 
-
-void riwayat() {
-    FILE* file = fopen("riwayat.txt", "r");
-    if (file == nullptr) {
+void riwayat()
+{
+    FILE *file = fopen("riwayat.txt", "r");
+    if (file == nullptr)
+    {
         cout << "Belum ada riwayat.\n";
         return;
     }
@@ -281,7 +361,8 @@ void riwayat() {
     char line[256];
     cout << "\n=== Riwayat Antrian ===\n";
     cout << "ID\tNama\t\tKursi\tPesanan\n";
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, sizeof(line), file))
+    {
         int nomor, nomorMeja;
         char nama[100], pesanan[100];
         sscanf(line, "%d,%[^,],%d,%[^\n]", &nomor, nama, &nomorMeja, pesanan);
@@ -290,11 +371,14 @@ void riwayat() {
     fclose(file);
 }
 
-void cariNomor(int nomor) {
-    Node* bantu = awal;
+void cariNomor(int nomor)
+{
+    Node *bantu = awal;
     bool ketemu = false;
-    while (bantu != nullptr) {
-        if (bantu->nomor == nomor) {
+    while (bantu != nullptr)
+    {
+        if (bantu->nomor == nomor)
+        {
             cout << "Ditemukan: ID " << bantu->nomor << ", Nama " << bantu->nama << ", Pesanan: " << bantu->pesanan << endl;
             ketemu = true;
         }
@@ -308,19 +392,19 @@ void tampilmenu()
 {
     system("cls");
     cout << "##################################\n"
-         << "#    SISTEM ANTRIAN RESTAURAN   ##\n"
+         << "##   SISTEM ANTRIAN RESTAURAN   ##\n"
          << "##################################\n"
          << "## 1. Tambah Antrian            ##\n"
          << "## 2. Tampilkan Antrian         ##\n"
          << "## 3. Hapus Antrian             ##\n"
          << "## 4. Layani Pelanggan          ##\n"
-         << "## 5. Cari Antriam              ##\n"
+         << "## 5. Cari Antrian              ##\n"
          << "## 6. Urutkan Data              ##\n"
          << "## 7. Edit Antrian              ##\n"
          << "## 8. Riwayat Pesanan           ##\n"
          << "## 9. Keluar                    ##\n"
          << "##################################\n"
-         << "Pilihan Anda (1-8) : ";
+         << "Pilihan Anda (1-9) : ";
 }
 
 int main()
@@ -329,66 +413,66 @@ int main()
     int nomor, nomorMeja;
     string nama, pesanan;
 
-    do{
-    tampilmenu();
-    cin >> menu;
-    switch (menu)
+    do
     {
-    case 1:
-    {
-        cout << "Masukkan ID: ";
-        cin >> nomor;
-        cout << "Masukkan Nama Pelanggan: ";
-        cin.ignore();
-        getline(cin, nama);
-        cout << "Masukkan Nomor Meja: ";
-        cin >> nomorMeja;
-        cin.ignore();
-        cout << "Masukkan Pesanan: ";
-        getline(cin, pesanan);
-        tambahAntrian(nomor, nomorMeja, nama, pesanan);
-        system("pause");
-        break;
-    }
-    case 2:
-        tampil();
-        break;
-    case 3:
-        cout << "Nomor yang ingin dihapus: ";
-        cin >> nomor;
-        hapus(nomor);
-        system("pause");
-        break;
-    case 4:
-        layani();
-        system("pause");
-        break;
-    case 5:
-        int nomor;
-        cout << "Masukkan nomor : ";
-        cin >> nomor;
-        cariNomor(nomor); 
-        system("pause");
-        break;
-    case 6:
-        sorting();
-        break;
-    case 7:
-        cout << "Nomor yang ingin diedit: ";
-        cin >> nomor;
-        edit(nomor);
-        system("pause");
-        break;
-    case 8:
-        riwayat();
-        break;
-    case 9:
-        exit(0);
-    default:
-        break;
-    }
-} while (menu != 10);
+        tampilmenu();
+        cin >> menu;
+        switch (menu)
+        {
+        case 1:
+        {
+            menumakanan();
+            cout << "Masukkan ID: ";
+            cin >> nomor;
+            cout << "Masukkan Nama Pelanggan: ";
+            cin.ignore();
+            getline(cin, nama);
+            cout << "Masukkan Nomor Meja: ";
+            cin >> nomorMeja;
+            cin.ignore();
+            cout << "Masukkan Pesanan: ";
+            getline(cin, pesanan);
+            tambahAntrian(nomor, nomorMeja, nama, pesanan);
+            system("pause");
+            break;
+        }
+        case 2:
+            tampil();
+            break;
+        case 3:
+            cout << "Nomor yang ingin dihapus: ";
+            cin >> nomor;
+            hapus(nomor);
+            system("pause");
+            break;
+        case 4:
+            layani();
+            system("pause");
+            break;
+        case 5:
+            int nomor;
+            cout << "Masukkan nomor : ";
+            cin >> nomor;
+            cariNomor(nomor);
+            system("pause");
+            break;
+        case 6:
+            sorting();
+            break;
+        case 7:
+            cout << "Nomor yang ingin diedit: ";
+            cin >> nomor;
+            edit(nomor);
+            system("pause");
+            break;
+        case 8:
+            riwayat();
+            break;
+        case 9:
+            exit(0);
+        default:
+            break;
+        }
+    } while (menu != 10);
     return 0;
-} 
-
-
+}
