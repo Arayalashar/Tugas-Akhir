@@ -83,9 +83,23 @@ void layani()
         cout << "Tidak ada antrian.\n";
         return;
     }
+    
     Node *temp = awal;
-    cout << "Melayani ID " << temp->nomor << " atas nama " << temp->nama << "\n";
-    simpanFile(temp);
+
+    int id = temp->nomor;
+    int noMeja = temp->nomorMeja;
+    string nama = temp->nama;
+    string pesanan = temp->pesanan;
+
+    cout << "Melayani ID " << id << " atas nama " << nama << "\n";
+
+    FILE *file = fopen("riwayat.txt", "a");
+    if (file != nullptr)
+    {
+        fprintf(file, "%d,%s,%d,%s\n", id, nama.c_str(), noMeja, pesanan.c_str());
+        fclose(file);
+    }
+
 
     if (awal == akhir)
     {
@@ -98,8 +112,9 @@ void layani()
     }
     delete temp;
 
-    cout << "Pelanggan dengan ID " << temp->nomor << " telah dilayani.\n";
+    cout << "Pelanggan dengan ID " << id << " telah dilayani.\n";
 }
+
 
 void edit(int nomor)
 {
@@ -467,6 +482,7 @@ int main()
             break;
         case 8:
             riwayat();
+            system("pause");
             break;
         case 9:
             exit(0);
