@@ -72,7 +72,7 @@ void simpanFile(Node *node)
         cout << "Gagal membuka file riwayat.\n";
         return;
     }
-    fprintf(file, "%d,%s,%d,%s\n", node->nomor, nama.c_str(), node->nomorMeja, pesanan.c_str());
+    fprintf(file, "%d,%s,%d,%s\n", node->nomor, node->nama.c_str(), node->nomorMeja, node->pesanan.c_str());
     fclose(file);
 }
 
@@ -222,24 +222,24 @@ void menumakanan()
 
     // Tahu & Tempe
     cout << "|    |    ** TAHU & TEMPE **   |            |\n";
-    cout << "| 10 | Tahu Gejrot              | Rp 8.000   |\n";
-    cout << "| 11 | Tahu Crispy              | Rp 10.000  |\n";
-    cout << "| 12 | Tempe Mendoan            | Rp 8.000   |\n";
+    cout << "| 10 | Tahu Gejrot             | Rp 8.000   |\n";
+    cout << "| 11 | Tahu Crispy             | Rp 10.000  |\n";
+    cout << "| 12 | Tempe Mendoan           | Rp 8.000   |\n";
     cout << "-----------------------------------------------\n";
 
     // Minuman
     cout << "|    |      ** MINUMAN **      |            |\n";
-    cout << "| 13 | Es Teh Manis             | Rp 5.000   |\n";
-    cout << "| 14 | Es Jeruk                 | Rp 7.000   |\n";
-    cout << "| 15 | Es Cappuccino            | Rp 12.000  |\n";
-    cout << "| 16 | Air Mineral              | Rp 3.000   |\n";
+    cout << "| 13 | Es Teh Manis            | Rp 5.000   |\n";
+    cout << "| 14 | Es Jeruk                | Rp 7.000   |\n";
+    cout << "| 15 | Es Cappuccino           | Rp 12.000  |\n";
+    cout << "| 16 | Air Mineral             | Rp 3.000   |\n";
     cout << "-----------------------------------------------\n";
 
     // Snack
     cout << "|    |      ** SNACK **        |            |\n";
-    cout << "| 17 | Kerupuk                  | Rp 2.000   |\n";
-    cout << "| 18 | Rempeyek                 | Rp 3.000   |\n";
-    cout << "| 19 | Emping                   | Rp 4.000   |\n";
+    cout << "| 17 | Kerupuk                 | Rp 2.000   |\n";
+    cout << "| 18 | Rempeyek                | Rp 3.000   |\n";
+    cout << "| 19 | Emping                  | Rp 4.000   |\n";
     cout << "===============================================\n";
     cout << "         * Level pedas: 0 = Tidak Pedas *    \n";
     cout << "         * Level pedas: 1-5 = Makin Pedas *  \n";
