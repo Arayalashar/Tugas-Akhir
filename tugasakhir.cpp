@@ -4,59 +4,71 @@
 #include <string>
 using namespace std;
 
-struct Node {
+struct Node
+{
     int nomor;
     int nomorMeja;
     string nama;
     string pesanan;
-    Node* next;
-    Node* prev;
+    Node *next;
+    Node *prev;
 };
 
-Node* awal = nullptr;
-Node* akhir = nullptr;
+Node *awal = nullptr;
+Node *akhir = nullptr;
 
-bool listkosong(){
+bool listkosong()
+{
     return (awal == nullptr);
 }
 
-void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru){
-    Node*NB = new Node;
-    NB -> nomor = nomorBaru;
-    NB -> nomorMeja = nomorMejaBaru;
-    NB -> nama = namaBaru;
-    NB -> pesanan = pesananBaru;
-    NB -> next = nullptr;
-    NB -> prev = nullptr;
+void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru)
+{
+    Node *NB = new Node;
+    NB->nomor = nomorBaru;
+    NB->nomorMeja = nomorMejaBaru;
+    NB->nama = namaBaru;
+    NB->pesanan = pesananBaru;
+    NB->next = nullptr;
+    NB->prev = nullptr;
 
-    if(listkosong()){
+    if (listkosong())
+    {
         awal = akhir = NB;
-    } else if (NB -> nama <= awal -> nama){
-        NB -> next = awal;
-        awal -> prev = NB;
+    }
+    else if (NB->nama <= awal->nama)
+    {
+        NB->next = awal;
+        awal->prev = NB;
         awal = NB;
-    } else {
-        Node* bantu = awal;
-        while (bantu->next != nullptr && NB->nama > bantu->next->nama) {
+    }
+    else
+    {
+        Node *bantu = awal;
+        while (bantu->next != nullptr && NB->nama > bantu->next->nama)
+        {
             bantu = bantu->next;
         }
         NB->next = bantu->next;
-        if (bantu->next != nullptr) {
+        if (bantu->next != nullptr)
+        {
             bantu->next->prev = NB;
         }
         NB->prev = bantu;
         bantu->next = NB;
 
-        if (NB->next == nullptr) {
+        if (NB->next == nullptr)
+        {
             akhir = NB;
         }
     }
-
 }
 
-void simpanFile(Node* node) {
-    FILE* file = fopen("riwayat.txt", "a");
-    if (file == nullptr) {
+void simpanFile(Node *node)
+{
+    FILE *file = fopen("riwayat.txt", "a");
+    if (file == nullptr)
+    {
         cout << "Gagal membuka file riwayat.\n";
         return;
     }
@@ -64,33 +76,45 @@ void simpanFile(Node* node) {
     fclose(file);
 }
 
-void layani() {
-    if (listkosong()) {
+void layani()
+{
+    if (listkosong())
+    {
         cout << "Tidak ada antrian.\n";
         return;
     }
-    Node* temp = awal;
+    Node *temp = awal;
     cout << "Melayani ID " << temp->nomor << " atas nama " << temp->nama << "\n";
     simpanFile(temp);
 
-    if (awal == akhir) {
+    if (awal == akhir)
+    {
         awal = akhir = nullptr;
-    } else {
+    }
+    else
+    {
         awal = awal->next;
         awal->prev = nullptr;
     }
     delete temp;
 }
 
-void edit(int nomor) {
-    Node* bantu = awal;
-    while (bantu != nullptr) {
-        if (bantu->nomor == nomor) {
+void edit(int nomor)
+{
+    Node *bantu = awal;
+    while (bantu != nullptr)
+    {
+        if (bantu->nomor == nomor)
+        {
             cout << "Edit data untuk ID " << nomor << ":\n";
-            cout << "Nama baru: "; cin.ignore(); getline(cin, bantu->nama);
-            cout << "Nomor kursi baru: "; cin >> bantu->nomorMeja;
+            cout << "Nama baru: ";
             cin.ignore();
-            cout << "Pesanan baru: "; getline(cin, bantu->pesanan);
+            getline(cin, bantu->nama);
+            cout << "Nomor kursi baru: ";
+            cin >> bantu->nomorMeja;
+            cin.ignore();
+            cout << "Pesanan baru: ";
+            getline(cin, bantu->pesanan);
             cout << "Berhasil diubah.\n";
             return;
         }
@@ -99,26 +123,35 @@ void edit(int nomor) {
     cout << "ID tidak ditemukan.\n";
 }
 
-
-void hapus(int nomor) {
-    Node* bantu = awal;
-    while (bantu != nullptr && bantu->nomor != nomor) {
+void hapus(int nomor)
+{
+    Node *bantu = awal;
+    while (bantu != nullptr && bantu->nomor != nomor)
+    {
         bantu = bantu->next;
     }
-    if (bantu == nullptr) {
+    if (bantu == nullptr)
+    {
         cout << "ID tidak ditemukan.\n";
         return;
     }
 
-    if (bantu == awal && bantu == akhir) {
+    if (bantu == awal && bantu == akhir)
+    {
         awal = akhir = nullptr;
-    } else if (bantu == awal) {
+    }
+    else if (bantu == awal)
+    {
         awal = awal->next;
         awal->prev = nullptr;
-    } else if (bantu == akhir) {
+    }
+    else if (bantu == akhir)
+    {
         akhir = akhir->prev;
         akhir->next = nullptr;
-    } else {
+    }
+    else
+    {
         bantu->prev->next = bantu->next;
         bantu->next->prev = bantu->prev;
     }
@@ -127,15 +160,140 @@ void hapus(int nomor) {
     cout << "Data berhasil dihapus.\n";
 }
 
-Node* cari(string nama) {
-    Node* bantu = awal;
-    while (bantu != nullptr) {
-        if (bantu->nama == nama) return bantu;
+void tampil()
+{
+    cout << "\n==== DAFTAR ANTRIAN ====\n";
+
+    if (listkosong())
+    {
+        cout << "Antrian kosong!\n";
+    }
+    else
+    {
+        cout << left << setw(5) << "ID"
+             << setw(20) << "Nama"
+             << setw(10) << "No.Meja"
+             << setw(25) << "Pesanan" << endl;
+        cout << string(60, '-') << endl;
+
+        Node *bantu = awal;
+        while (bantu != nullptr)
+        {
+            cout << left << setw(5) << bantu->nomor
+                 << setw(20) << bantu->nama
+                 << setw(10) << bantu->nomorMeja
+                 << setw(25) << bantu->pesanan << endl;
+            bantu = bantu->next;
+        }
+    }
+
+    cout << "\nTekan Enter untuk kembali ke menu...";
+    cin.ignore();
+    cin.get();
+}
+
+void sorting()
+{
+    if (listkosong() || awal->next == nullptr)
+    {
+        cout << "\nAntrian kosong atau hanya ada 1 data, tidak perlu diurutkan!\n";
+        cout << "Tekan Enter untuk kembali ke menu...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+
+    cout << "\n==== SORTING ANTRIAN ====\n";
+    cout << "Pilih kriteria sorting:\n";
+    cout << "1. Berdasarkan Nama (A-Z)\n";
+    cout << "2. Berdasarkan ID (Ascending)\n";
+    cout << "3. Berdasarkan Nomor Meja (Ascending)\n";
+    cout << "Pilihan Anda: ";
+
+    int pilihan;
+    cin >> pilihan;
+
+    // Bubble sort untuk doubly linked list
+    bool tukar;
+    Node *current;
+    Node *last = nullptr;
+
+    do
+    {
+        tukar = false;
+        current = awal;
+
+        while (current->next != last)
+        {
+            bool harus_tukar = false;
+
+            switch (pilihan)
+            {
+            case 1: // Sort berdasarkan nama
+                if (current->nama > current->next->nama)
+                {
+                    harus_tukar = true;
+                }
+                break;
+            case 2: // Sort berdasarkan ID
+                if (current->nomor > current->next->nomor)
+                {
+                    harus_tukar = true;
+                }
+                break;
+            case 3: // Sort berdasarkan nomor meja
+                if (current->nomorMeja > current->next->nomorMeja)
+                {
+                    harus_tukar = true;
+                }
+                break;
+            default:
+                cout << "Pilihan tidak valid!\n";
+                return;
+            }
+
+            if (harus_tukar)
+            {
+                // Tukar data
+                int tempNomor = current->nomor;
+                int tempNomorMeja = current->nomorMeja;
+                string tempNama = current->nama;
+                string tempPesanan = current->pesanan;
+
+                current->nomor = current->next->nomor;
+                current->nomorMeja = current->next->nomorMeja;
+                current->nama = current->next->nama;
+                current->pesanan = current->next->pesanan;
+
+                current->next->nomor = tempNomor;
+                current->next->nomorMeja = tempNomorMeja;
+                current->next->nama = tempNama;
+                current->next->pesanan = tempPesanan;
+
+                tukar = true;
+            }
+            current = current->next;
+        }
+        last = current;
+    } while (tukar);
+
+    cout << "Sorting berhasil!\n";
+    cout << "Tekan Enter untuk kembali ke menu...";
+    cin.ignore();
+    cin.get();
+}
+
+Node *cari(string nama)
+{
+    Node *bantu = awal;
+    while (bantu != nullptr)
+    {
+        if (bantu->nama == nama)
+            return bantu;
         bantu = bantu->next;
     }
     return nullptr;
 }
-
 
 void tampilmenu();
 int main()
@@ -143,43 +301,53 @@ int main()
     int menu;
     tampilmenu();
     cin >> menu;
-    switch (menu){
+    switch (menu)
+    {
     case 1:
-        {
+    {
         int nomor, nomorMeja;
         string nama, pesanan;
-        cout << "Masukkan ID: "; cin >> nomor;
-        cout << "Masukkan Nama Pelanggan: "; cin.ignore(); getline(cin, nama);
-        cout << "Masukkan Nomor Meja: "; cin >> nomorMeja;
+        cout << "Masukkan ID: ";
+        cin >> nomor;
+        cout << "Masukkan Nama Pelanggan: ";
         cin.ignore();
-        cout << "Masukkan Pesanan: "; getline(cin, pesanan);
+        getline(cin, nama);
+        cout << "Masukkan Nomor Meja: ";
+        cin >> nomorMeja;
+        cin.ignore();
+        cout << "Masukkan Pesanan: ";
+        getline(cin, pesanan);
         tambahAntrian(nomor, nomorMeja, nama, pesanan);
         break;
-        }
+    }
     case 2:
-        //tampil();
+        tampil();
         break;
     case 3:
         int nomor;
-        cout << "Nomor yang ingin dihapus: "; cin >> nomor;
-        hapus(nomor); break;
+        cout << "Nomor yang ingin dihapus: ";
+        cin >> nomor;
+        hapus(nomor);
+        break;
         break;
     case 4:
         layani();
         break;
     case 5:
-        //cari();
+        // cari();
         break;
     case 6:
-        //urutkan();
+        // urutkan();
         break;
     case 7:
         int nomor;
-        cout << "Nomor yang ingin diedit: "; cin >> nomor;
-        edit(nomor); break;
+        cout << "Nomor yang ingin diedit: ";
+        cin >> nomor;
+        edit(nomor);
+        break;
         break;
     case 8:
-        //riwayat();
+        // riwayat();
     case 9:
         exit(0);
     default:
