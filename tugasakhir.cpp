@@ -83,7 +83,7 @@ void layani()
         cout << "Tidak ada antrian.\n";
         return;
     }
-    
+
     Node *temp = awal;
 
     int id = temp->nomor;
@@ -100,7 +100,6 @@ void layani()
         fclose(file);
     }
 
-
     if (awal == akhir)
     {
         awal = akhir = nullptr;
@@ -114,7 +113,6 @@ void layani()
 
     cout << "Pelanggan dengan ID " << id << " telah dilayani.\n";
 }
-
 
 void edit(int nomor)
 {
@@ -211,54 +209,53 @@ void tampil()
 
 void menumakanan()
 {
-    cout << "\n";
-    cout << "===============================================\n";
-    cout << "           MENU RESTORAN GACOAN              \n";
-    cout << "===============================================\n";
-    cout << "| No |        Nama Menu        |   Harga    |\n";
-    cout << "===============================================\n";
+    cout << "\n"
+         << "=============================================\n"
+         << "           MENU RESTORAN GACOAN              \n"
+         << "=============================================\n"
+         << "| No |        Nama Menu        |   Harga    |\n"
+         << "=============================================\n"
 
-    // Mie
-    cout << "|    |      ** MIE GACOAN **   |            |\n";
-    cout << "| 1  | Mie Gacoan Level 0      | Rp 15.000  |\n";
-    cout << "| 2  | Mie Gacoan Level 1      | Rp 15.000  |\n";
-    cout << "| 3  | Mie Gacoan Level 2      | Rp 15.000  |\n";
-    cout << "| 4  | Mie Gacoan Level 3      | Rp 15.000  |\n";
-    cout << "| 5  | Mie Gacoan Level 4      | Rp 15.000  |\n";
-    cout << "| 6  | Mie Gacoan Level 5      | Rp 15.000  |\n";
-    cout << "-----------------------------------------------\n";
+         // Mie
+         << "|    |      ** MIE GACOAN **   |            |\n"
+         << "| 1  | Mie Gacoan Level 0      | Rp 15.000  |\n"
+         << "| 2  | Mie Gacoan Level 1      | Rp 15.000  |\n"
+         << "| 3  | Mie Gacoan Level 2      | Rp 15.000  |\n"
+         << "| 4  | Mie Gacoan Level 3      | Rp 15.000  |\n"
+         << "| 5  | Mie Gacoan Level 4      | Rp 15.000  |\n"
+         << "| 6  | Mie Gacoan Level 5      | Rp 15.000  |\n"
+         << "---------------------------------------------\n"
+         // Dimsum
+         << "|    |      ** DIMSUM **       |            |\n"
+         << "| 7  | Dimsum Ayam (4 pcs)     | Rp 12.000  |\n"
+         << "| 8  | Dimsum Udang (4 pcs)    | Rp 15.000  |\n"
+         << "| 9  | Dimsum Kulit (4 pcs)    | Rp 10.000  |\n"
+         << "---------------------------------------------\n"
 
-    // Dimsum
-    cout << "|    |      ** DIMSUM **       |            |\n";
-    cout << "| 7  | Dimsum Ayam (4 pcs)     | Rp 12.000  |\n";
-    cout << "| 8  | Dimsum Udang (4 pcs)    | Rp 15.000  |\n";
-    cout << "| 9  | Dimsum Kulit (4 pcs)    | Rp 10.000  |\n";
-    cout << "-----------------------------------------------\n";
+         // Tahu & Tempe
+         << "|    |    ** TAHU & TEMPE **   |            |\n"
+         << "| 10 | Tahu Gejrot             | Rp 8.000   |\n"
+         << "| 11 | Tahu Crispy             | Rp 10.000  |\n"
+         << "| 12 | Tempe Mendoan           | Rp 8.000   |\n"
+         << "---------------------------------------------\n"
 
-    // Tahu & Tempe
-    cout << "|    |    ** TAHU & TEMPE **   |            |\n";
-    cout << "| 10 | Tahu Gejrot             | Rp 8.000   |\n";
-    cout << "| 11 | Tahu Crispy             | Rp 10.000  |\n";
-    cout << "| 12 | Tempe Mendoan           | Rp 8.000   |\n";
-    cout << "-----------------------------------------------\n";
+         // Minuman
+         << "|    |      ** MINUMAN **      |            |\n"
+         << "| 13 | Es Teh Manis            | Rp 5.000   |\n"
+         << "| 14 | Es Jeruk                | Rp 7.000   |\n"
+         << "| 15 | Es Cappuccino           | Rp 12.000  |\n"
+         << "| 16 | Air Mineral             | Rp 3.000   |\n"
+         << "---------------------------------------------\n"
 
-    // Minuman
-    cout << "|    |      ** MINUMAN **      |            |\n";
-    cout << "| 13 | Es Teh Manis            | Rp 5.000   |\n";
-    cout << "| 14 | Es Jeruk                | Rp 7.000   |\n";
-    cout << "| 15 | Es Cappuccino           | Rp 12.000  |\n";
-    cout << "| 16 | Air Mineral             | Rp 3.000   |\n";
-    cout << "-----------------------------------------------\n";
-
-    // Snack
-    cout << "|    |      ** SNACK **        |            |\n";
-    cout << "| 17 | Kerupuk                 | Rp 2.000   |\n";
-    cout << "| 18 | Rempeyek                | Rp 3.000   |\n";
-    cout << "| 19 | Emping                  | Rp 4.000   |\n";
-    cout << "===============================================\n";
-    cout << "         * Level pedas: 0 = Tidak Pedas *    \n";
-    cout << "         * Level pedas: 1-5 = Makin Pedas *  \n";
-    cout << "===============================================\n";
+         // Snack
+         << "|    |      ** SNACK **        |            |\n"
+         << "| 17 | Kerupuk                 | Rp 2.000   |\n"
+         << "| 18 | Rempeyek                | Rp 3.000   |\n"
+         << "| 19 | Emping                  | Rp 4.000   |\n"
+         << "=============================================\n"
+         << "       * Level pedas: 0 = Tidak Pedas *      \n"
+         << "      * Level pedas: 1-5 = Makin Pedas *     \n"
+         << "=============================================\n";
 }
 
 void sorting()
@@ -425,7 +422,7 @@ void tampilmenu()
 int main()
 {
     int menu;
-    int nomor, nomorMeja;
+    int nomor, nomormeja = 0;
     string nama, pesanan;
 
     do
@@ -436,18 +433,17 @@ int main()
         {
         case 1:
         {
+            nomormeja++;
             menumakanan();
             cout << "Masukkan ID: ";
             cin >> nomor;
             cout << "Masukkan Nama Pelanggan: ";
             cin.ignore();
             getline(cin, nama);
-            cout << "Masukkan Nomor Meja: ";
-            cin >> nomorMeja;
             cin.ignore();
             cout << "Masukkan Pesanan: ";
             getline(cin, pesanan);
-            tambahAntrian(nomor, nomorMeja, nama, pesanan);
+            tambahAntrian(nomor, nomormeja, nama, pesanan);
             system("pause");
             break;
         }
