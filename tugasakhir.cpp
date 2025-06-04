@@ -1,30 +1,26 @@
 #include <iostream>
 #include <iomanip>
-#include <cstring>
 #include <string>
 using namespace std;
 
-struct Node
-{
+struct Node {
     int nomor;
     int nomorMeja;
     string nama;
     string pesanan;
-    Node *next;
-    Node *prev;
+    Node* next;
+    Node* prev;
 };
 
-Node *awal = nullptr;
-Node *akhir = nullptr;
+Node* awal = nullptr;
+Node* akhir = nullptr;
 
-bool listkosong()
-{
+bool listkosong() {
     return (awal == nullptr);
 }
 
-void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru)
-{
-    Node *NB = new Node;
+void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pesananBaru) {
+    Node* NB = new Node;
     NB->nomor = nomorBaru;
     NB->nomorMeja = nomorMejaBaru;
     NB->nama = namaBaru;
@@ -32,43 +28,33 @@ void tambahAntrian(int nomorBaru, int nomorMejaBaru, string namaBaru, string pes
     NB->next = nullptr;
     NB->prev = nullptr;
 
-    if (listkosong())
-    {
+    if (listkosong()) {
         awal = akhir = NB;
-    }
-    else if (NB->nama <= awal->nama)
-    {
+    } else if (NB->nama <= awal->nama) {
         NB->next = awal;
         awal->prev = NB;
         awal = NB;
-    }
-    else
-    {
-        Node *bantu = awal;
-        while (bantu->next != nullptr && NB->nama > bantu->next->nama)
-        {
+    } else {
+        Node* bantu = awal;
+        while (bantu->next != nullptr && NB->nama > bantu->next->nama) {
             bantu = bantu->next;
         }
         NB->next = bantu->next;
-        if (bantu->next != nullptr)
-        {
+        if (bantu->next != nullptr) {
             bantu->next->prev = NB;
         }
         NB->prev = bantu;
         bantu->next = NB;
 
-        if (NB->next == nullptr)
-        {
+        if (NB->next == nullptr) {
             akhir = NB;
         }
     }
 }
 
-void simpanFile(Node *node)
-{
-    FILE *file = fopen("riwayat.txt", "a");
-    if (file == nullptr)
-    {
+void simpanFile(Node* node) {
+    FILE* file = fopen("riwayat.txt", "a");
+    if (file == nullptr) {
         cout << "Gagal membuka file riwayat.\n";
         return;
     }
@@ -76,15 +62,13 @@ void simpanFile(Node *node)
     fclose(file);
 }
 
-void layani()
-{
-    if (listkosong())
-    {
+void layani() {
+    if (listkosong()) {
         cout << "Tidak ada antrian.\n";
         return;
     }
 
-    Node *temp = awal;
+    Node* temp = awal;
 
     int id = temp->nomor;
     int noMeja = temp->nomorMeja;
@@ -93,19 +77,12 @@ void layani()
 
     cout << "Melayani ID " << id << " atas nama " << nama << "\n";
 
-    FILE *file = fopen("riwayat.txt", "a");
-    if (file != nullptr)
-    {
-        fprintf(file, "%d,%s,%d,%s\n", id, nama.c_str(), noMeja, pesanan.c_str());
-        fclose(file);
-    }
+    // Simpan ke riwayat
+    simpanFile(temp);
 
-    if (awal == akhir)
-    {
+    if (awal == akhir) {
         awal = akhir = nullptr;
-    }
-    else
-    {
+    } else {
         awal = awal->next;
         awal->prev = nullptr;
     }
@@ -114,13 +91,10 @@ void layani()
     cout << "Pelanggan dengan ID " << id << " telah dilayani.\n";
 }
 
-void edit(int nomor)
-{
-    Node *bantu = awal;
-    while (bantu != nullptr)
-    {
-        if (bantu->nomor == nomor)
-        {
+void edit(int nomor) {
+    Node* bantu = awal;
+    while (bantu != nullptr) {
+        if (bantu->nomor == nomor) {
             cout << "Edit data untuk ID " << nomor << ":\n";
             cout << "Nama baru: ";
             cin.ignore();
@@ -138,35 +112,25 @@ void edit(int nomor)
     cout << "ID tidak ditemukan.\n";
 }
 
-void hapus(int nomor)
-{
-    Node *bantu = awal;
-    while (bantu != nullptr && bantu->nomor != nomor)
-    {
+void hapus(int nomor) {
+    Node* bantu = awal;
+    while (bantu != nullptr && bantu->nomor != nomor) {
         bantu = bantu->next;
     }
-    if (bantu == nullptr)
-    {
+    if (bantu == nullptr) {
         cout << "ID tidak ditemukan.\n";
         return;
     }
 
-    if (bantu == awal && bantu == akhir)
-    {
+    if (bantu == awal && bantu == akhir) {
         awal = akhir = nullptr;
-    }
-    else if (bantu == awal)
-    {
+    } else if (bantu == awal) {
         awal = awal->next;
         awal->prev = nullptr;
-    }
-    else if (bantu == akhir)
-    {
+    } else if (bantu == akhir) {
         akhir = akhir->prev;
         akhir->next = nullptr;
-    }
-    else
-    {
+    } else {
         bantu->prev->next = bantu->next;
         bantu->next->prev = bantu->prev;
     }
@@ -175,25 +139,20 @@ void hapus(int nomor)
     cout << "Data berhasil dihapus.\n";
 }
 
-void tampil()
-{
+void tampil() {
     cout << "\n==== DAFTAR ANTRIAN ====\n";
 
-    if (listkosong())
-    {
+    if (listkosong()) {
         cout << "Antrian kosong!\n";
-    }
-    else
-    {
+    } else {
         cout << left << setw(5) << "ID"
              << setw(20) << "Nama"
              << setw(10) << "No.Meja"
              << setw(25) << "Pesanan" << endl;
         cout << string(60, '-') << endl;
 
-        Node *bantu = awal;
-        while (bantu != nullptr)
-        {
+        Node* bantu = awal;
+        while (bantu != nullptr) {
             cout << left << setw(5) << bantu->nomor
                  << setw(20) << bantu->nama
                  << setw(10) << bantu->nomorMeja
@@ -201,14 +160,12 @@ void tampil()
             bantu = bantu->next;
         }
     }
-
     cout << "\nTekan Enter untuk kembali ke menu...";
     cin.ignore();
     cin.get();
 }
 
-void menumakanan()
-{
+void menumakanan() {
     cout << "\n"
          << "=============================================\n"
          << "           MENU RESTORAN GACOAN              \n"
@@ -216,7 +173,6 @@ void menumakanan()
          << "| No |        Nama Menu        |   Harga    |\n"
          << "=============================================\n"
 
-         // Mie
          << "|    |      ** MIE GACOAN **   |            |\n"
          << "| 1  | Mie Gacoan Level 0      | Rp 15.000  |\n"
          << "| 2  | Mie Gacoan Level 1      | Rp 15.000  |\n"
@@ -225,21 +181,19 @@ void menumakanan()
          << "| 5  | Mie Gacoan Level 4      | Rp 15.000  |\n"
          << "| 6  | Mie Gacoan Level 5      | Rp 15.000  |\n"
          << "---------------------------------------------\n"
-         // Dimsum
+
          << "|    |      ** DIMSUM **       |            |\n"
          << "| 7  | Dimsum Ayam (4 pcs)     | Rp 12.000  |\n"
          << "| 8  | Dimsum Udang (4 pcs)    | Rp 15.000  |\n"
          << "| 9  | Dimsum Kulit (4 pcs)    | Rp 10.000  |\n"
          << "---------------------------------------------\n"
 
-         // Tahu & Tempe
          << "|    |    ** TAHU & TEMPE **   |            |\n"
          << "| 10 | Tahu Gejrot             | Rp 8.000   |\n"
          << "| 11 | Tahu Crispy             | Rp 10.000  |\n"
          << "| 12 | Tempe Mendoan           | Rp 8.000   |\n"
          << "---------------------------------------------\n"
 
-         // Minuman
          << "|    |      ** MINUMAN **      |            |\n"
          << "| 13 | Es Teh Manis            | Rp 5.000   |\n"
          << "| 14 | Es Jeruk                | Rp 7.000   |\n"
@@ -247,7 +201,6 @@ void menumakanan()
          << "| 16 | Air Mineral             | Rp 3.000   |\n"
          << "---------------------------------------------\n"
 
-         // Snack
          << "|    |      ** SNACK **        |            |\n"
          << "| 17 | Kerupuk                 | Rp 2.000   |\n"
          << "| 18 | Rempeyek                | Rp 3.000   |\n"
@@ -258,233 +211,219 @@ void menumakanan()
          << "=============================================\n";
 }
 
-void sorting()
-{
-    if (listkosong() || awal->next == nullptr)
-    {
-        cout << "\nAntrian kosong atau hanya ada 1 data, tidak perlu diurutkan!\n";
-        cout << "Tekan Enter untuk kembali ke menu...";
-        cin.ignore();
-        cin.get();
+int cariHarga(int noMenu) {
+    switch (noMenu) {
+        case 1: case 2: case 3: case 4: case 5: case 6: return 15000;
+        case 7: return 12000;
+        case 8: return 15000;
+        case 9: return 10000;
+        case 10: return 8000;
+        case 11: return 10000;
+        case 12: return 8000;
+        case 13: return 5000;
+        case 14: return 7000;
+        case 15: return 12000;
+        case 16: return 3000;
+        case 17: return 2000;
+        case 18: return 3000;
+        case 19: return 4000;
+        default: return 0;
+    }
+}
+
+void sorting() {
+    if (listkosong() || awal == akhir) {
+        cout << "Data kurang untuk diurutkan.\n";
         return;
     }
 
-    cout << "\n==== SORTING ANTRIAN ====\n";
-    cout << "Pilih kriteria sorting:\n";
-    cout << "1. Berdasarkan Nama (A-Z)\n";
-    cout << "2. Berdasarkan ID (Ascending)\n";
-    cout << "3. Berdasarkan Nomor Meja (Ascending)\n";
-    cout << "Pilihan Anda: ";
+    bool swapped;
+    do {
+        swapped = false;
+        Node* current = awal;
 
-    int pilihan;
-    cin >> pilihan;
+        while (current->next != nullptr) {
+            if (current->nama > current->next->nama) {
+                // Tukar data saja (bukan node)
+                swap(current->nomor, current->next->nomor);
+                swap(current->nomorMeja, current->next->nomorMeja);
+                swap(current->nama, current->next->nama);
+                swap(current->pesanan, current->next->pesanan);
 
-    // Bubble sort untuk doubly linked list
-    bool tukar;
-    Node *current;
-    Node *last = nullptr;
-
-    do
-    {
-        tukar = false;
-        current = awal;
-
-        while (current->next != last)
-        {
-            bool harus_tukar = false;
-
-            switch (pilihan)
-            {
-            case 1: // Sort berdasarkan nama
-                if (current->nama > current->next->nama)
-                {
-                    harus_tukar = true;
-                }
-                break;
-            case 2: // Sort berdasarkan ID
-                if (current->nomor > current->next->nomor)
-                {
-                    harus_tukar = true;
-                }
-                break;
-            case 3: // Sort berdasarkan nomor meja
-                if (current->nomorMeja > current->next->nomorMeja)
-                {
-                    harus_tukar = true;
-                }
-                break;
-            default:
-                cout << "Pilihan tidak valid!\n";
-                return;
-            }
-
-            if (harus_tukar)
-            {
-                // Tukar data
-                int tempNomor = current->nomor;
-                int tempNomorMeja = current->nomorMeja;
-                string tempNama = current->nama;
-                string tempPesanan = current->pesanan;
-
-                current->nomor = current->next->nomor;
-                current->nomorMeja = current->next->nomorMeja;
-                current->nama = current->next->nama;
-                current->pesanan = current->next->pesanan;
-
-                current->next->nomor = tempNomor;
-                current->next->nomorMeja = tempNomorMeja;
-                current->next->nama = tempNama;
-                current->next->pesanan = tempPesanan;
-
-                tukar = true;
+                swapped = true;
             }
             current = current->next;
         }
-        last = current;
-    } while (tukar);
+    } while (swapped);
 
-    cout << "Sorting berhasil!\n";
-    cout << "Tekan Enter untuk kembali ke menu...";
-    cin.ignore();
-    cin.get();
+    cout << "Data berhasil diurutkan berdasarkan nama.\n";
 }
 
-Node *cari(string nama)
-{
-    Node *bantu = awal;
-    while (bantu != nullptr)
-    {
-        if (bantu->nama == nama)
+Node* cari(string namaCari) {
+    Node* bantu = awal;
+    while (bantu != nullptr) {
+        if (bantu->nama == namaCari) {
             return bantu;
+        }
         bantu = bantu->next;
     }
     return nullptr;
 }
 
-void riwayat()
-{
-    FILE *file = fopen("riwayat.txt", "r");
-    if (file == nullptr)
-    {
-        cout << "Belum ada riwayat.\n";
+void riwayat() {
+    FILE* file = fopen("riwayat.txt", "r");
+    if (file == nullptr) {
+        cout << "Tidak ada riwayat.\n";
         return;
     }
 
+    cout << "\n=== RIWAYAT PELAYANAN ===\n";
     char line[256];
-    cout << "\n=== Riwayat Antrian ===\n";
-    cout << "ID\tNama\t\tKursi\tPesanan\n";
-    while (fgets(line, sizeof(line), file))
-    {
-        int nomor, nomorMeja;
-        char nama[100], pesanan[100];
-        sscanf(line, "%d,%[^,],%d,%[^\n]", &nomor, nama, &nomorMeja, pesanan);
-        cout << nomor << "\t" << nama << "\t\t" << nomorMeja << "\t" << pesanan << "\n";
+    while (fgets(line, sizeof(line), file)) {
+        cout << line;
     }
     fclose(file);
+
+    cout << "\nTekan Enter untuk kembali ke menu...";
+    cin.ignore();
+    cin.get();
 }
 
-void cariNomor(int nomor)
-{
-    Node *bantu = awal;
-    bool ketemu = false;
-    while (bantu != nullptr)
-    {
-        if (bantu->nomor == nomor)
-        {
-            cout << "Ditemukan: ID " << bantu->nomor << ", Nama " << bantu->nama << ", Pesanan: " << bantu->pesanan << endl;
-            ketemu = true;
+int inputPesanan() {
+    char lagi;
+    int totalBayar = 0;
+    string detailPesanan = "";
+
+    do {
+        menumakanan();
+
+        int noMenu;
+        cout << "Masukkan nomor menu (1-19): ";
+        cin >> noMenu;
+
+        int harga = cariHarga(noMenu);
+        if (harga == 0) {
+            cout << "Nomor menu tidak valid!\n";
+            continue;
         }
-        bantu = bantu->next;
-    }
-    if (!ketemu)
-        cout << "Nomor kursi " << nomor << " tidak ditemukan.\n";
+
+        int jumlah;
+        cout << "Jumlah pesanan: ";
+        cin >> jumlah;
+
+        int subtotal = harga * jumlah;
+        totalBayar += subtotal;
+
+        cout << "Subtotal: Rp " << subtotal << "\n";
+
+        // Tambah ke detail pesanan
+        detailPesanan += "NoMenu " + to_string(noMenu) + " x" + to_string(jumlah) + ", ";
+
+        cout << "Pesan lagi? (y/n): ";
+        cin >> lagi;
+    } while (lagi == 'y' || lagi == 'Y');
+
+    cout << "Total yang harus dibayar: Rp " << totalBayar << "\n";
+
+    return totalBayar;
 }
 
-void tampilmenu()
-{
-    system("cls");
-    cout << "##################################\n"
-         << "##   SISTEM ANTRIAN RESTAURAN   ##\n"
-         << "##################################\n"
-         << "## 1. Tambah Antrian            ##\n"
-         << "## 2. Tampilkan Antrian         ##\n"
-         << "## 3. Hapus Antrian             ##\n"
-         << "## 4. Layani Pelanggan          ##\n"
-         << "## 5. Cari Antrian              ##\n"
-         << "## 6. Urutkan Data              ##\n"
-         << "## 7. Edit Antrian              ##\n"
-         << "## 8. Riwayat Pesanan           ##\n"
-         << "## 9. Keluar                    ##\n"
-         << "##################################\n"
-         << "Pilihan Anda (1-9) : ";
+void tampilmenu() {
+    cout << "\n======= MENU UTAMA =======\n"
+         << "1. Tambah Antrian\n"
+         << "2. Tampilkan Antrian\n"
+         << "3. Hapus Antrian\n"
+         << "4. Layani Antrian\n"
+         << "5. Cari Antrian\n"
+         << "6. Sorting Antrian\n"
+         << "7. Edit Antrian\n"
+         << "8. Riwayat Pelayanan\n"
+         << "9. Keluar\n"
+         << "==========================\n"
+         << "Pilih menu: ";
 }
 
-int main()
-{
-    int menu;
-    int nomor, nomormeja = 0;
-    string nama, pesanan;
+int main() {
+    int pilihan;
+    int idCounter = 1;
 
-    do
-    {
+    do {
         tampilmenu();
-        cin >> menu;
-        switch (menu)
-        {
-        case 1:
-        {
-            nomormeja++;
-            menumakanan();
-            cout << "Masukkan ID: ";
-            cin >> nomor;
-            cout << "Masukkan Nama Pelanggan: ";
-            cin.ignore();
-            getline(cin, nama);
-            cin.ignore();
-            cout << "Masukkan Pesanan: ";
-            getline(cin, pesanan);
-            tambahAntrian(nomor, nomormeja, nama, pesanan);
-            system("pause");
-            break;
+        cin >> pilihan;
+
+        switch (pilihan) {
+            case 1: {
+                string nama;
+                int noMeja;
+                cin.ignore();
+
+                cout << "Nama pelanggan: ";
+                getline(cin, nama);
+                cout << "Nomor Meja: ";
+                cin >> noMeja;
+                cin.ignore();
+
+                cout << "Masukkan pesanan:\n";
+                int totalBayar = inputPesanan();
+
+                // Simpan deskripsi pesanan sebagai string ringkas
+                string pesanan = "Pesanan senilai Rp " + to_string(totalBayar);
+
+                tambahAntrian(idCounter++, noMeja, nama, pesanan);
+                cout << "Antrian berhasil ditambahkan.\n";
+                break;
+            }
+            case 2:
+                tampil();
+                break;
+            case 3: {
+                int id;
+                cout << "Masukkan ID yang ingin dihapus: ";
+                cin >> id;
+                hapus(id);
+                break;
+            }
+            case 4:
+                layani();
+                break;
+            case 5: {
+                string namaCari;
+                cin.ignore();
+                cout << "Masukkan nama yang dicari: ";
+                getline(cin, namaCari);
+                Node* hasil = cari(namaCari);
+                if (hasil) {
+                    cout << "Ditemukan: ID " << hasil->nomor
+                         << ", Nama " << hasil->nama
+                         << ", No Meja " << hasil->nomorMeja
+                         << ", Pesanan: " << hasil->pesanan << "\n";
+                } else {
+                    cout << "Nama tidak ditemukan.\n";
+                }
+                break;
+            }
+            case 6:
+                sorting();
+                break;
+            case 7: {
+                int id;
+                cout << "Masukkan ID yang ingin diedit: ";
+                cin >> id;
+                edit(id);
+                break;
+            }
+            case 8:
+                riwayat();
+                break;
+            case 9:
+                cout << "Keluar dari program.\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid.\n";
+                break;
         }
-        case 2:
-            tampil();
-            break;
-        case 3:
-            cout << "Nomor yang ingin dihapus: ";
-            cin >> nomor;
-            hapus(nomor);
-            system("pause");
-            break;
-        case 4:
-            layani();
-            system("pause");
-            break;
-        case 5:
-            int nomor;
-            cout << "Masukkan nomor : ";
-            cin >> nomor;
-            cariNomor(nomor);
-            system("pause");
-            break;
-        case 6:
-            sorting();
-            break;
-        case 7:
-            cout << "Nomor yang ingin diedit: ";
-            cin >> nomor;
-            edit(nomor);
-            system("pause");
-            break;
-        case 8:
-            riwayat();
-            system("pause");
-            break;
-        case 9:
-            exit(0);
-        default:
-            break;
-        }
-    } while (menu != 10);
+
+    } while (pilihan != 9);
+
     return 0;
 }
